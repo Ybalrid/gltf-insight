@@ -42,6 +42,7 @@ before_deploy:
 deploy:
 - provider: GitHub
   release: "Windows continuous build"
+  tag: continuous-appveyor
   description: "AppVeyor build $(appveyor_repo_commit)"
   auth_token:
     secure: RXPTLkNrWs2rfSSgkOKEqvpxcWw3rS1d7Cb9HU3Rk72JHL7SIfKbJSLl9ZdqFZlc

@@ -6,7 +6,7 @@ platform: x64
 
 environment:
   access_token:
-    secure: tu9rukh+1gS+NmhzHUoWepxRrRbeAxbMJFf4YdfLxkf2XSbNA7oiKtqHfQJ+ofBA
+    secure: RXPTLkNrWs2rfSSgkOKEqvpxcWw3rS1d7Cb9HU3Rk72JHL7SIfKbJSLl9ZdqFZlc
 
 before_build:
 - cmd: >-

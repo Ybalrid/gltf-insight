@@ -279,24 +279,31 @@ void skinning_data_window(
 }
 #endif
 
-void morph_target_window(gltf_node& mesh_skeleton_graph, int nb_morph_targets,
+void morph_target_window(gltf_node& mesh_skeleton_graph, std::vector<gltf_insight::mesh>& meshes,
                          bool* open) {
   if (open && !*open) return;
   if (ImGui::Begin("Morph Target blend weights", open)) {
-    for (int w = 0; w < nb_morph_targets; ++w) {
+    std::vector<std::string> meshesNames;
+    for (const auto& mesh : meshes) meshesNames.push_back(mesh.name);
+    static int currentItem = 0;
+    if (!(currentItem < meshesNames.size())) currentItem = 0;
+
+    ImGuiCombo("Mesh", &currentItem, meshesNames);
+
+    for (int targetIndex = 0; targetIndex < meshes[currentItem].nb_morph_targets; ++targetIndex) {
       std::string name;
 
       if (mesh_skeleton_graph.pose.target_names.empty() ||
-          mesh_skeleton_graph.pose.target_names[size_t(w)].empty())
-        name = "Morph Target [" + std::to_string(w) + "]";
+          mesh_skeleton_graph.pose.target_names[size_t(targetIndex)].empty())
+        name = "Morph Target [" + std::to_string(targetIndex) + "]";
       else
-        name = mesh_skeleton_graph.pose.target_names[size_t(w)];
+        name = mesh_skeleton_graph.pose.target_names[size_t(targetIndex)];
 
       ImGui::SliderFloat(name.c_str(),
-                         &mesh_skeleton_graph.pose.blend_weights[size_t(w)], 0,
+                         &mesh_skeleton_graph.pose.blend_weights[size_t(targetIndex)], 0,
                          1, "%f");
-      mesh_skeleton_graph.pose.blend_weights[size_t(w)] = glm::clamp(
-          mesh_skeleton_graph.pose.blend_weights[size_t(w)], 0.f, 1.f);
+      mesh_skeleton_graph.pose.blend_weights[size_t(targetIndex)] = glm::clamp(
+          mesh_skeleton_graph.pose.blend_weights[size_t(targetIndex)], 0.f, 1.f);
     }
   }
   ImGui::End();
@@ -1050,7 +1057,7 @@ void about_window(GLuint logo, bool* open) {
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(0, 1, 1, 1),
                        " "
-                       "https://github.com/lighttransport/gltf-insight"
+                       "https://github.com/ybalrd/gltf-insight"
                        "\n\n");
 
     ImGui::Text(

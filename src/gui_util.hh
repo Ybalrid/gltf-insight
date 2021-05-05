@@ -125,7 +125,7 @@ void mesh_display_window(std::vector<gltf_insight::mesh>& mesh,
                          bool* open = nullptr);
 
 // Window that display the morph target and their current weights
-void morph_target_window(gltf_node& mesh_skeleton_graph, int nb_morph_targets,
+void morph_target_window(gltf_node& mesh_skeleton_graph, std::vector<gltf_insight::mesh>& nb_morph_targets,
                          bool* open = nullptr);
 
 // Call this to initialize a window, and an opengl context in it

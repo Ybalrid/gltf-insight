@@ -1138,7 +1138,7 @@ void app::run_help_menu(bool& about_open) {
   if (ImGui::BeginMenu("Help")) {
     if (ImGui::MenuItem("About...")) about_open = true;
     if (ImGui::MenuItem("See on GitHub"))
-      os_utils::open_url("https://github.com/lighttransport/gltf-insight/");
+      os_utils::open_url("https://github.com/ybalrid/gltf-insight/");
     ImGui::EndMenu();
   }
 }
@@ -1895,7 +1895,7 @@ bool app::main_loop_frame() {
       animation_window(animations, &show_animation_window);
       mesh_display_window(loaded_meshes, &show_mesh_display_window);
       morph_target_window(gltf_scene_tree,
-                          loaded_meshes.front().nb_morph_targets,
+                          loaded_meshes,
                           &show_morph_target_window);
       shader_selector_window(shader_names, selected_shader, shader_to_use,
                              reinterpret_cast<int&>(current_display_mode),
@@ -2093,6 +2093,9 @@ void app::cpu_compute_morphed_display_mesh(
 
   // Accumulate the delta, v = v0 + w0 * m0 + w1 * m1 + w2 * m2 ...
   for (size_t w = 0; w < mesh_skeleton_graph.pose.blend_weights.size(); ++w) {
+    if (w >= morph_targets[submesh_id].size()) 
+        break;
+
     const float weight = mesh_skeleton_graph.pose.blend_weights[w];
     display_position[submesh_id][vertex] +=
         weight * morph_targets[submesh_id][w].position[vertex];
@@ -2492,7 +2495,7 @@ void app::run_3D_gizmo(gltf_node* active_bone) {
     // drift due to floating point numerical instability while
     // decomposing/recomposing TRS matrices that way
     if (delta_matrix != glm::mat4(1.f)) {
-      // we actually don't need the skew and perpective ones, but GLM API does
+      // we actually don't need the skew and perceptive ones, but GLM API does
       static glm::vec3 position(0.f), scale(1.f), skew(1.f);
       static glm::quat rotation(1.f, 0.f, 0.f, 0.f);
       static glm::vec4 perspective(1.f);

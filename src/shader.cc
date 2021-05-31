@@ -143,6 +143,16 @@ void shader::set_uniform(const char* name, const int value) const {
 #endif
 }
 
+void shader::set_uniform(const char* name, const bool value) const
+{
+	set_uniform(name, (int)(value ? GL_TRUE : GL_FALSE));
+}
+
+void shader::set_uniform(const char* name, gltf_insight::texture_slot value) const
+{
+	return set_uniform(name, int(value));
+}
+
 void shader::set_uniform(const char* name, const glm::vec4& v) const {
   if (!name) return;
 

@@ -3,7 +3,8 @@
 #include <string>
 
 /// Lose collection of wrapping of operating system APIs
-namespace os_utils {
+namespace os_utils
+{
 /// Make a directory
 bool mkdir(const std::string& dir_path);
 
@@ -15,4 +16,4 @@ bool open_url(const std::string& url);
 
 /// Get the detected platform
 std::string platform();
-}  // namespace os_utils
+} // namespace os_utils

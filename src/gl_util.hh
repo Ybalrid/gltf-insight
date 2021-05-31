@@ -47,56 +47,58 @@ static constexpr auto VBO_layout_color = 3;
 static constexpr auto VBO_layout_joints = 4;
 static constexpr auto VBO_layout_weights = 5;
 
-struct utility_buffers {
-  static GLuint point_vbo, line_vbo, point_vao, line_vao, point_ebo, line_ebo;
-  static void init_static_buffers();
+struct utility_buffers
+{
+	static GLuint point_vbo, line_vbo, point_vao, line_vao, point_ebo, line_ebo;
+	static void init_static_buffers();
 };
 
 /// Debug output
 void APIENTRY glDebugOutput(GLenum source, GLenum type, GLuint id,
-                            GLenum severity, GLsizei length,
-                            const GLchar* message, void* userParam);
+	GLenum severity, GLsizei length,
+	const GLchar* message, void* userParam);
 
 /// Draw a point in the current space (model/view/projection matrix set to
 /// shader)
 void draw_point(const glm::vec3& point, float point_size, GLuint shader,
-                const glm::vec4& color);
+	const glm::vec4& color);
 
 /// Draw a point as the origin of the current space (model/view/projection
 /// matrix set to shader)
 void draw_space_origin_point(float point_size, GLuint shader,
-                             const glm::vec4& color);
+	const glm::vec4& color);
 /// Draw the X, Y and Z unit vectors of the current space (model/view/projection
 /// matrix set to shader)
 void draw_space_base(GLuint shader, const float line_width,
-                     const float axis_scale);
+	const float axis_scale);
 
 /// Draw a line from origin to end points in the current space
 /// (model/view/projection matrix set to shader)
 void draw_line(GLuint shader, const glm::vec3 origin, const glm::vec3 end,
-               const glm::vec4 draw_color, const float line_width);
+	const glm::vec4 draw_color, const float line_width);
 
 /// Load all the shaders. Skinning shader needs t
 void load_shaders(const size_t nb_joints,
-                  std::map<std::string, shader>& shaders);
+	std::map<std::string, shader>& shaders);
 
 /// Update all shader's uniforms
 void update_uniforms(std::map<std::string, shader>& shaders, bool use_ibl,
-                     const glm::vec3& camera_position,
-                     const glm::vec3& light_color,
-                     const glm::vec3& light_direction, const int active_joint,
-                     const std::string& shader_to_use, const glm::mat4& model,
-                     const glm::mat4& mvp, const glm::mat3& normal,
-                     const std::vector<glm::mat4>& joint_matrices,
-                     const glm::vec3& active_vertex);
+	const glm::vec3& camera_position,
+	const glm::vec3& light_color,
+	const glm::vec3& light_direction, const int active_joint,
+	const std::string& shader_to_use, const glm::mat4& model,
+	const glm::mat4& mvp, const glm::mat3& normal,
+	const std::vector<glm::mat4>& joint_matrices,
+	const glm::vec3& active_vertex);
 
 /// Info needed to actually submit drawcall for a submesh
-struct draw_call_submesh_descriptor {
-  GLenum draw_mode;
-  size_t count;
-  GLuint VAO;
+struct draw_call_submesh_descriptor
+{
+	GLenum draw_mode;
+	size_t count;
+	GLuint VAO;
 };
 
 /// Perform the specified drawcall
 void perform_draw_call(
-    const draw_call_submesh_descriptor& draw_call_to_perform);
+	const draw_call_submesh_descriptor& draw_call_to_perform);

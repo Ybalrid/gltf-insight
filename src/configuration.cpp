@@ -14,23 +14,29 @@ glm::vec4 configuration::bone_highlight_color = glm::vec4(0.5, 0, 0.5, 1);
 glm::vec4 configuration::joint_highlight_color = glm::vec4(0, 1, 0, 1);
 float configuration::bone_draw_size = 3;
 float configuration::joint_draw_size = 3;
+bool configuration::use_ibl = false;
 bool configuration::editor_configuration_open = false;
+float configuration::gamma = 2.2;
 
-void configuration::show_editor_configuration_window() {
-  static const ImVec4 yellow(1, 1, 0, 1);
-  if (!editor_configuration_open) return;
-  if (ImGui::Begin("Editor Configuration", &editor_configuration_open)) {
-    ImGui::TextColored(yellow, "General:");
-    ImGui::ColorEdit3("Highlight color", glm::value_ptr(highlight_color));
-    ImGui::SliderFloat("Vertex highlight size", &vertex_highlight_size, 1, 10);
-    ImGui::TextColored(yellow, "Skeleton display:");
-    ImGui::ColorEdit3("Bone", glm::value_ptr(bone_draw_color));
-    ImGui::ColorEdit3("Bone (selected)", glm::value_ptr(bone_highlight_color));
-    ImGui::SliderFloat("Bone size", &bone_draw_size, 1, 10);
-    ImGui::ColorEdit3("Joint", glm::value_ptr(joint_draw_color));
-    ImGui::ColorEdit3("Joint (selected)",
-                      glm::value_ptr(joint_highlight_color));
-    ImGui::SliderFloat("Joint size", &joint_draw_size, 1, 10);
-  }
-  ImGui::End();
+void configuration::show_editor_configuration_window()
+{
+	static const ImVec4 yellow(1, 1, 0, 1);
+	if (!editor_configuration_open)
+		return;
+	if (ImGui::Begin("Editor Configuration", &editor_configuration_open))
+	{
+		ImGui::TextColored(yellow, "General:");
+		ImGui::ColorEdit3("Highlight color", glm::value_ptr(highlight_color));
+		ImGui::SliderFloat("Vertex highlight size", &vertex_highlight_size, 1, 10);
+		ImGui::TextColored(yellow, "Skeleton display:");
+		ImGui::ColorEdit3("Bone", glm::value_ptr(bone_draw_color));
+		ImGui::ColorEdit3("Bone (selected)", glm::value_ptr(bone_highlight_color));
+		ImGui::SliderFloat("Bone size", &bone_draw_size, 1, 10);
+		ImGui::ColorEdit3("Joint", glm::value_ptr(joint_draw_color));
+		ImGui::ColorEdit3("Joint (selected)",
+			glm::value_ptr(joint_highlight_color));
+		ImGui::SliderFloat("Joint size", &joint_draw_size, 1, 10);
+		ImGui::Checkbox("Use Image Based Lighting?", &configuration::use_ibl);
+	}
+	ImGui::End();
 }

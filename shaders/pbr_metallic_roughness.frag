@@ -94,7 +94,7 @@ vec3 diffuse(pbr_info pbr_inputs)
 
 vec3 specular_reflection(pbr_info pbr_inputs)
 {
- return pbr_inputs.reflect_0 + (pbr_inputs.reflect_90 - pbr_inputs.reflect_0) 
+ return pbr_inputs.reflect_0 + (pbr_inputs.reflect_90 - pbr_inputs.reflect_0)
  * pow(clamp( 1.0 - pbr_inputs.v_dot_h, 0.0, 1.0), 5.0 );
 }
 
@@ -119,7 +119,7 @@ float microfaced_distribution(pbr_info pbr_inputs)
 }
 
 
-//IBL / ENV LIGHTING 
+//IBL / ENV LIGHTING
 uniform bool use_ibl;
 uniform float gamma;
 uniform float exposure;
@@ -144,7 +144,7 @@ vec3 uncharted2_tonemap(vec3 color)
 vec4 tonemap(vec4 color)
 {
 	vec3 outcol = uncharted2_tonemap(color.rgb * exposure);
-	outcol = outcol * (1.0f / uncharted2_tonemap(vec3(11.2f)));	
+	outcol = outcol * (1.0f / uncharted2_tonemap(vec3(11.2f)));
 	return vec4(pow(outcol, vec3(1.0f /gamma)), color.a);
 }
 
@@ -161,8 +161,8 @@ vec3 get_IBL_contribution(pbr_info pbr_inputs, vec3 n, vec3 reflection)
 	float lod = (pbr_inputs.preceptual_roughness * prefiltered_cube_mip_levels);
 	// retrieve a scale and bias to F0. See [1], Figure 3
 	vec3 brdf = (texture(brdf_lut, vec2(pbr_inputs.n_dot_v, 1.0 - pbr_inputs.preceptual_roughness))).rgb;
-	
-	
+
+
 	vec3 diffuseLight = SRGB_to_LINEAR(tonemap(texture(env_irradiance, n))).rgb;
 	vec3 specularLight = SRGB_to_LINEAR(tonemap(textureLod(env_prefiltered_specular, reflection, lod))).rgb;
 
@@ -171,7 +171,7 @@ vec3 get_IBL_contribution(pbr_info pbr_inputs, vec3 n, vec3 reflection)
 
 	// For presentation, this allows us to disable IBL terms
 	// For presentation, this allows us to disable IBL terms
-	
+
 	//diffuse *= uboParams.scaleIBLAmbient;
 	//specular *= uboParams.scaleIBLAmbient;
 
@@ -180,7 +180,7 @@ vec3 get_IBL_contribution(pbr_info pbr_inputs, vec3 n, vec3 reflection)
 
 void main()
 {
-	
+
 	//sample the base_color texture. //TODO SRGB color space.
 	vec4 base_color = interpolated_colors * base_color_factor * texture(base_color_texture, interpolated_uv);
 
@@ -200,7 +200,7 @@ void main()
 	float alpha_roughness = perceptual_roughness * perceptual_roughness;
 
 	vec3 f0 = vec3(0.04f); //frenel factor
-	vec3 diffuse_color = base_color.rgb * (vec3(1.0f) - f0); 
+	vec3 diffuse_color = base_color.rgb * (vec3(1.0f) - f0);
 	diffuse_color *= 1.0f - metallic;
 	vec3 specular_color = mix(f0, base_color.rgb, metallic);
 
@@ -219,7 +219,7 @@ void main()
 	vec3 h = normalize(l+v);
 	vec3 reflection = -normalize(reflect(v, n));
 	reflection.y *= -1.0f;
-	
+
 	float n_dot_l = clamp(dot(n, l), 0.001, 1.0);
 	float n_dot_v = clamp(abs(dot(n, v)), 0.001, 1.0);
 	float n_dot_h = clamp(dot(n, h), 0.0, 1.0);
@@ -250,23 +250,21 @@ void main()
 	vec3 sepcular_contribution = F * G * D / (4.0f * n_dot_l * n_dot_v);
 	vec3 color = n_dot_l * light_color * (diffuse_contribution + sepcular_contribution);
 
-    /* 
 	//TODO add uniform bool use_ibl;
-	if(use_ibl == true)
+	if(use_ibl)
 	{
 		color += get_IBL_contribution(pbr_inputs, n, reflection);
 	}
-	*/ 
-	
+
 	//TODO make these tweakable?
 	//Occlusion remove light is small features of the geometry
 	const float occlusion_strength = 1.0f;
 	float ao = texture(occlusion_texture, interpolated_uv).r;
 	color = mix(color, color * ao, occlusion_strength);
-	
+
 	//Emissive makes part of the object actually "emit" light
 	const float emissive_strength = 1.0f;
-	vec3 emissive = (vec4(emissive_factor, emissive_strength) 
+	vec3 emissive = (vec4(emissive_factor, emissive_strength)
 		* texture(emissive_texture, interpolated_uv)).rgb;
 	color += emissive;
 
@@ -277,5 +275,4 @@ void main()
 	{
 		output_color = mix(output_color, highlight_color, 0.5);
 	}
-
 }

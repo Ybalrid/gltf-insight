@@ -29,39 +29,40 @@ SOFTWARE.
 #include "gl_util.hh"
 #include "gltf-graph.hh"
 
-struct morph_target {
-  // std::string name;
-  // TODO having acces to the name of a morph target would be nice. BUT glTF 2.0
-  // doesn't define this.
-  // See: https://github.com/KhronosGroup/glTF/issues/1036
+struct morph_target
+{
+	// std::string name;
+	// TODO having acces to the name of a morph target would be nice. BUT glTF 2.0
+	// doesn't define this.
+	// See: https://github.com/KhronosGroup/glTF/issues/1036
 
-  std::vector<float> position, normal;
+	std::vector<float> position, normal;
 };
 
 void load_animations(const tinygltf::Model& model,
-                     std::vector<animation>& animations);
+	std::vector<animation>& animations);
 
 void load_geometry(
-    const tinygltf::Model& model, std::vector<GLuint>& textures,
-    const std::vector<tinygltf::Primitive>& primitives,
-    std::vector<draw_call_submesh_descriptor>& draw_call_descriptor,
-    std::vector<GLuint>& VAOs, std::vector<std::array<GLuint, VBO_count>>& VBOs,
-    std::vector<std::vector<unsigned>>& indices,
-    std::vector<std::vector<float>>& vertex_coord,
-    std::vector<std::vector<float>>& texture_coord,
-    std::vector<std::vector<float>>& colors,
-    std::vector<std::vector<float>>& normals,
-    std::vector<std::vector<float>>& weights,
-    std::vector<std::vector<unsigned short>>& joints);
+	const tinygltf::Model& model, std::vector<GLuint>& textures,
+	const std::vector<tinygltf::Primitive>& primitives,
+	std::vector<draw_call_submesh_descriptor>& draw_call_descriptor,
+	std::vector<GLuint>& VAOs, std::vector<std::array<GLuint, VBO_count>>& VBOs,
+	std::vector<std::vector<unsigned>>& indices,
+	std::vector<std::vector<float>>& vertex_coord,
+	std::vector<std::vector<float>>& texture_coord,
+	std::vector<std::vector<float>>& colors,
+	std::vector<std::vector<float>>& normals,
+	std::vector<std::vector<float>>& weights,
+	std::vector<std::vector<unsigned short>>& joints);
 
 void load_morph_targets(const tinygltf::Model& model,
-                        const tinygltf::Primitive& primitive,
-                        std::vector<morph_target>& morph_targets,
-                        bool& has_normals, bool& has_tangents);
+	const tinygltf::Primitive& primitive,
+	std::vector<morph_target>& morph_targets,
+	bool& has_normals, bool& has_tangents);
 
 void load_morph_target_names(const tinygltf::Mesh& mesh,
-                             std::vector<std::string>& names);
+	std::vector<std::string>& names);
 
 void load_inverse_bind_matrix_array(
-    tinygltf::Model model, const tinygltf::Skin& skin, size_t nb_joints,
-    std::vector<glm::mat4>& inverse_bind_matrices);
+	tinygltf::Model model, const tinygltf::Skin& skin, size_t nb_joints,
+	std::vector<glm::mat4>& inverse_bind_matrices);
